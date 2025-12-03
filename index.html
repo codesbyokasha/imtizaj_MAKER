@@ -38,17 +38,19 @@
         return;
       }
 
-      const char1 = t1[0]; // Use only first character of text1
-      let result = [char1]; // Start with text1 first
+      const t1Chars = t1.split(''); // All characters of text1
+      let result = [];
 
       for (let i = 0; i < t2.length; i++) {
-        result.push(t2[i]); // text2 letter
-        result.push(char1); // text1 letter
+        const char1 = t1Chars[i % t1Chars.length]; // Repeat text1 chars cyclically
+        result.push(char1);      // text1 letter
+        result.push(t2[i]);      // text2 letter
       }
 
-      // Merged output (no spaces)
-      const merged = result.join('');
-      document.getElementById('result').innerText = merged;
+      // Add last character of text1 at the end
+      result.push(t1Chars[t2.length % t1Chars.length]);
+
+      document.getElementById('result').innerText = result.join('');
     }
   </script>
 </body>
