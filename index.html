@@ -11,6 +11,7 @@
     button { width: 100%; padding: 12px; margin-top: 10px; font-size: 18px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; }
     button:hover { background: #005fcc; }
     .output { margin-top: 20px; padding: 15px; background: #eef7ff; border-radius: 8px; font-size: 22px; white-space: pre-wrap; }
+    .red { color: red; }
   </style>
 </head>
 <body>
@@ -25,6 +26,10 @@
 
     <button onclick="makeImtizaj()">امتزاج بنائیں</button>
 
+    <label>جدا جدا امتزاج:</label>
+    <div class="output" id="resultSeparated"></div>
+
+    <label>مکمل ملا ہوا امتزاج:</label>
     <div class="output" id="result"></div>
   </div>
 
@@ -34,22 +39,37 @@
       let t2 = document.getElementById('text2').value.replace(/\s+/g, '');
 
       if (!t1 || !t2) {
+        document.getElementById('resultSeparated').innerHTML = '';
         document.getElementById('result').innerText = '';
         return;
       }
 
-      const t1Chars = t1.split(''); // All characters of text1
+      const t1Chars = t1.split('');
       let result = [];
+      let separatedParts = [];
 
       for (let i = 0; i < t2.length; i++) {
-        const char1 = t1Chars[i % t1Chars.length]; // Repeat text1 chars cyclically
-        result.push(char1);      // text1 letter
-        result.push(t2[i]);      // text2 letter
+        const char1 = t1Chars[i % t1Chars.length];
+
+        // Normal text1
+        separatedParts.push(`<span>${char1}</span>`);
+
+        // Red text2
+        separatedParts.push(`<span class="red">${t2[i]}</span>`);
+
+        result.push(char1);
+        result.push(t2[i]);
       }
 
-      // Add last character of text1 at the end
-      result.push(t1Chars[t2.length % t1Chars.length]);
+      // Add final character of text1
+      const lastChar = t1Chars[t2.length % t1Chars.length];
+      separatedParts.push(`<span>${lastChar}</span>`);
+      result.push(lastChar);
 
+      // Show separated (with colors)
+      document.getElementById('resultSeparated').innerHTML = separatedParts.join(' ');
+
+      // Show merged normal
       document.getElementById('result').innerText = result.join('');
     }
   </script>
